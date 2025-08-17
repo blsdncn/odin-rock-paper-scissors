@@ -1,8 +1,8 @@
 # JS Rock Paper Scissors Game
 ## Functionality:
-- Uses prompt to get user input
-- Uses Math.random to get computer input
-- Reprompts if user gives invalid input using a while loop.
+- Use buttons to select your move, computer will randomly generate a move.
+- Scoreboard to track total w/l/t
+- Text box to display latest play results
 
 ## Todo:
 - Have user start a new game and specify how many rounds.
