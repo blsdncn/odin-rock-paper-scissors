@@ -63,10 +63,14 @@ function firstUpper(str){
   return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
 }
 
-function playRound(){
-  const humanChoice = getHumanChoice();
+function playRound(humanChoice=undefined){
+  if(humanChoice === undefined){
+    const humanChoice = getHumanChoice();
+  }
   const computerChoice = getComputerChoice();
   const roundResult = getPlayResult(humanChoice,computerChoice);
+  const resultBox = document.querySelector('.result-box');
+  let scoreBox = null;
 
   if(roundResult === -1){
     console.log("Round inconclusive due to error.");
@@ -77,53 +81,47 @@ function playRound(){
 
   switch (roundResult){
     case 0:
+      scoreBox = document.querySelector('.ties-box');
       resultString += 'Tied!';
       break;
     case 1:
+      scoreBox = document.querySelector('.wins-box');
       resultString += 'You won!';
       break;
     case 2:
+      scoreBox = document.querySelector('.losses-box');
       resultString += 'You lost!';
       break;
   }
   resultString += `\nYou played: ${firstUpper(humanChoice)} | Computer played: ${firstUpper(computerChoice)}`;
-  console.log(resultString);
+  resultBox.textContent = resultString; 
+  incrementScoreBox(scoreBox);
   return roundResult;
 }
 
-function playGame(numRounds = 5){
-  let humanScore = 0;
-  let computerScore = 0;
-  let ties = 0;
 
-/*
-=============== Welcome to Rock-Paper-Scissors ===============
-*/
 
-  console.log('=============== Welcome to Rock-Paper-Scissors ===============\n===============          By: blsdncn           ===============');
-  for(let i = 1; i <= numRounds; i++){
-    console.log(`-------------- Round ${i} --------------`);
-    switch(playRound()) {
-      case 0: 
-        ties ++;
-        break;
-      case 1:
-        humanScore++;
-        break;
-      case 2:
-        computerScore++;
-        break;
-    }
-    console.log(`Wins: ${humanScore} | Losses: ${computerScore} | Ties: ${ties}`);
-  }
-  let resultString = `==== Game over! ====\nResult: `;
-  if(humanScore === computerScore){
-    resultString += 'Tie!';
-  } else{
-    resultString += `${humanScore > computerScore ? 'Player': 'Computer'} Wins!`
-    resultString += '\n=============================================================='
-  }
-  console.log(resultString);
+const incrementScoreBox = (elm) => {
+  const splitText = elm.textContent.split(' ');
+  elm.textContent = `${splitText[0]} ${++splitText[1]}`;
 }
 
-playGame();
+
+const buttonsBox = document.getElementById("buttonsBox");
+buttonsBox.addEventListener("click", (e) => {
+  let choice = '';
+  switch(e.target.id){
+    case 'rock-button':
+      choice = 'rock';
+      break;
+    case 'paper-button':
+      choice = 'paper';
+      break;
+    case 'scissors-button':
+      choice = 'scissors';
+      break;
+    default:
+      return; 
+  }
+  playRound(choice);
+});
